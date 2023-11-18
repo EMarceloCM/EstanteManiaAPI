@@ -3,6 +3,7 @@ using EstanteMania.API.DTO_s;
 using EstanteMania.API.UnitOfWork.Interface;
 using EstanteMania.API.Utils;
 using EstanteMania.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -10,6 +11,7 @@ namespace EstanteMania.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class AuthorController(IUnitOfWork uow, IMapper mapper) : ControllerBase
     {
         private readonly IUnitOfWork _uow = uow;
@@ -41,7 +43,7 @@ namespace EstanteMania.API.Controllers
             return Ok(authorsDTO);
         }
 
-        [HttpGet("/get-all-authors")]
+        [HttpGet("get-all-authors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<AuthorDTO>>> GetAll()
@@ -67,7 +69,7 @@ namespace EstanteMania.API.Controllers
             return Ok(_mapper.Map<AuthorDTO>(author));
         }
 
-        [HttpGet("/author-with-books/{authorId:int}")]
+        [HttpGet("author-with-books/{authorId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AuthorWithBooksDTO>> GetAuthorWithBooks(int authorId)
@@ -80,7 +82,7 @@ namespace EstanteMania.API.Controllers
             return _mapper.Map<AuthorWithBooksDTO>(authorWithBooks);
         }
 
-        [HttpGet("/search-author/{name}")]
+        [HttpGet("search-author/{name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<AuthorDTO>>> Search(string name)

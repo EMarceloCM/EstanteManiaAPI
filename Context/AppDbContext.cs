@@ -1,9 +1,11 @@
-﻿using EstanteMania.Models.Models;
+﻿using EstanteMania.API.Identity_Entities;
+using EstanteMania.Models.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EstanteMania.API.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {}

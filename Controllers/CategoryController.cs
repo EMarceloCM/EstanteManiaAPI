@@ -3,6 +3,7 @@ using EstanteMania.API.DTO_s;
 using EstanteMania.API.UnitOfWork.Interface;
 using EstanteMania.API.Utils;
 using EstanteMania.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -10,6 +11,7 @@ namespace EstanteMania.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class CategoryController(IUnitOfWork uow, IMapper mapper) : ControllerBase
     {
         private readonly IUnitOfWork _uow = uow;
@@ -41,7 +43,7 @@ namespace EstanteMania.API.Controllers
             return Ok(categoriesDTO);
         }
 
-        [HttpGet("/get-all-categories")]
+        [HttpGet("get-all-categories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
@@ -69,7 +71,7 @@ namespace EstanteMania.API.Controllers
             return Ok(categoryDTO);
         }
 
-        [HttpGet("/category-with-books/{categoryId:int}")]
+        [HttpGet("category-with-books/{categoryId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryWithBookDTO>> GetCategoryWithBooks(int categoryId)
@@ -82,7 +84,7 @@ namespace EstanteMania.API.Controllers
             return _mapper.Map<CategoryWithBookDTO>(categoryWithBooks); ;
         }
 
-        [HttpGet("/search-category/{name}")]
+        [HttpGet("search-category/{name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> Search(string name)
