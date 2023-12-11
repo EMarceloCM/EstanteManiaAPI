@@ -17,7 +17,8 @@ namespace EstanteMania.API.Controllers
         private readonly IUnitOfWork _uow = uow;
         private readonly IMapper _mapper = mapper;
 
-        [HttpGet()]
+        [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<BookDTO>>> Pagination([FromQuery] QueryStringParameters parameters, [FromQuery] string? filter)
@@ -50,6 +51,7 @@ namespace EstanteMania.API.Controllers
         }
 
         [HttpGet("get-all-books")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<BookDTO>>> GetAll()
@@ -63,6 +65,7 @@ namespace EstanteMania.API.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetBook")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<BookDTO>> GetById(int id)
@@ -156,15 +159,15 @@ namespace EstanteMania.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromQuery] int authorId, [FromQuery] List<int> categoryIds, [FromBody] BookDTO bookDTO)
+        public async Task<IActionResult> Post(/*[FromQuery] int authorId, */[FromQuery] List<int> categoryIds, [FromBody] BookDTO bookDTO)
         {
             if (bookDTO == null || !ModelState.IsValid)
                 return BadRequest();
 
-            if(! await _uow.AuthorRepository.Exist(authorId))
+            if(! await _uow.AuthorRepository.Exist(bookDTO.AuthorId))
                 return NotFound("There is any authors with the given id.");
 
-            bookDTO.AuthorId = authorId;
+            //bookDTO.AuthorId = authorId;
 
             var categories = await _uow.CategoryRepository.GetAllByIdsAsync(categoryIds);
             if (categories == null || !categories.Any())
@@ -182,17 +185,17 @@ namespace EstanteMania.API.Controllers
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromQuery] List<int> categoryIds, [FromQuery] int authorId, int id, [FromBody] BookDTO bookDTO)
+        public async Task<IActionResult> Put([FromQuery] List<int> categoryIds, /*[FromQuery] int authorId, */int id, [FromBody] BookDTO bookDTO)
         {
             if (id != bookDTO.Id || bookDTO == null || !ModelState.IsValid)
                 return BadRequest(ModelState);
             if (! await _uow.BookRepository.Exist(id))
                 return NotFound($"There is not a book with id = {id}.");
 
-            if (! await _uow.AuthorRepository.Exist(authorId))
+            if (! await _uow.AuthorRepository.Exist(bookDTO.AuthorId))
                 return NotFound("There is any authors with the given id.");
 
-            bookDTO.AuthorId = authorId;
+            //bookDTO.AuthorId = authorId;
 
             var categories = await _uow.CategoryRepository.GetAllByIdsAsync(categoryIds);
             if (categories == null || !categories.Any())

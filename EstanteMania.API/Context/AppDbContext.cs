@@ -15,6 +15,9 @@ namespace EstanteMania.API.Context
         public DbSet<Author> Author { get; set; }
         public DbSet<CategoryBook> CategoryBook { get; set; }
 
+        public DbSet<Carrinho> Carrinho { get; set; }
+        public DbSet<CarrinhoItem> CarrinhoItens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
 
@@ -63,6 +66,10 @@ namespace EstanteMania.API.Context
             mb.Entity<CategoryBook>().Ignore(x => x.Book);
             #endregion
 
+            #region Cart
+            mb.Entity<Carrinho>().HasKey(x => x.Id);
+            #endregion
+
             #region Relacionamentos e CategoryBooksId
             mb.Entity<Category>().HasMany(x => x.Books).WithMany(x => x.Categories)
                 .UsingEntity<CategoryBook>(
@@ -85,6 +92,18 @@ namespace EstanteMania.API.Context
                 .HasMany(b => b.CategorysBooks)
                 .WithOne(cb => cb.Category)
                 .HasForeignKey(cb => cb.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<Book>()
+                .HasMany(b => b.Itens)
+                .WithOne(cb => cb.Book)
+                .HasForeignKey(cb => cb.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            mb.Entity<Carrinho>()
+                .HasMany(b => b.Itens)
+                .WithOne(cb => cb.Carrinho)
+                .HasForeignKey(cb => cb.CarrinhoId)
                 .OnDelete(DeleteBehavior.Cascade);
             #endregion
 

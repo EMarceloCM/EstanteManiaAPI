@@ -21,7 +21,21 @@ namespace EstanteMania.API.Repositories
                 }).AsNoTracking().FirstOrDefaultAsync();
             return categoryWBooks;
         }
-        
+
+        public async Task<List<CategoryWithBook>?> GetAllCategoriesWithBooksAsync()
+        {
+            var categoriesWithBooks = await _context.Category
+                .Select(x => new CategoryWithBook
+                {
+                    Category = x,
+                    Books = x.CategorysBooks.Select(cb => cb.Book)
+                })
+                .AsNoTracking().ToListAsync();
+
+            return categoriesWithBooks;
+        }
+
+
         public async Task<IEnumerable<Category>> GetAllByIdsAsync(List<int> ids)
         {
             List<Category> categories = [];

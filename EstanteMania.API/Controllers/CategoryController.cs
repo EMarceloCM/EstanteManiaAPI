@@ -50,6 +50,7 @@ namespace EstanteMania.API.Controllers
         }
 
         [HttpGet("get-all-categories")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
@@ -64,6 +65,7 @@ namespace EstanteMania.API.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetCategory")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryDTO>> GetById(int id)
@@ -78,6 +80,7 @@ namespace EstanteMania.API.Controllers
         }
 
         [HttpGet("category-with-books/{categoryId:int}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryWithBookDTO>> GetCategoryWithBooks(int categoryId)
@@ -88,6 +91,20 @@ namespace EstanteMania.API.Controllers
                 return NotFound($"Cannot found any category with id = {categoryId}");
 
             return _mapper.Map<CategoryWithBookDTO>(categoryWithBooks); ;
+        }
+
+        [HttpGet("categories-with-books")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<CategoryWithBookDTO>>> GetAllCategoriesWithBooks()
+        {
+            var categoriesWithBooks = await _uow.CategoryRepository.GetAllCategoriesWithBooksAsync();
+
+            if (categoriesWithBooks == null)
+                return NotFound($"Any category was find.");
+
+            return _mapper.Map<List<CategoryWithBookDTO>>(categoriesWithBooks);
         }
 
         [HttpGet("search-category/{name}")]

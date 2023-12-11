@@ -7,6 +7,7 @@ namespace EstanteMania.API.UnitOfWork.Interface
         ICategoryRepository CategoryRepository { get; }
         IAuthorRepository AuthorRepository { get; }
         IBookRepository BookRepository { get; }
+        ICartRepository CartRepository { get; }
         void Commit();
     }
 }

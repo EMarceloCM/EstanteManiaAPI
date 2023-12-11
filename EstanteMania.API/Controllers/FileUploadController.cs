@@ -32,11 +32,13 @@ namespace EstanteMania.API.Controllers
                 if (!VerificaExtensaoArquivo(_file))
                 {
                     return BadRequest($"O arquivo não possui uma extensão ou não é uma imagem.\r\n" +
-                        $"Extensões suportadas: .jpg/.png/.bmp");
+                        $"Extensões suportadas: .jpg/.png/.bmp/.jpge");
                 }
 
-                UploadResult uploadResult = new();
-                uploadResult.FileName = _file.Name;
+                UploadResult uploadResult = new()
+                {
+                    FileName = _file.Name
+                };
 
                 if (processedFiles < maxFileNumber)
                 {
@@ -84,7 +86,7 @@ namespace EstanteMania.API.Controllers
 
         private static bool VerificaExtensaoArquivo(IFormFile file)
         {
-            string[] extensoes = new string[] { "jpg", "bmp", "png" };
+            string[] extensoes = ["jpg", "bmp", "png", "jpge"];
             var nomeArquivoExtensao = file.FileName.Split(".")[1];
 
             if (string.IsNullOrEmpty(nomeArquivoExtensao) || !extensoes.Contains(nomeArquivoExtensao))

@@ -10,6 +10,7 @@ namespace EstanteMania.API.UnitOfWork
         private CategoryRepository? _categoryRepository;
         private AuthorRepository? _authorRepository;
         private BookRepository? _bookRepository;
+        private CartRepository? _cartRepository;
         public AppDbContext _context;
 
         public UnitOfWork(AppDbContext context)
@@ -38,6 +39,14 @@ namespace EstanteMania.API.UnitOfWork
             get
             {
                 return _bookRepository ??= new BookRepository(_context);
+            }
+        }
+
+        public ICartRepository CartRepository
+        {
+            get
+            {
+                return _cartRepository ??= new CartRepository(_context);
             }
         }
 

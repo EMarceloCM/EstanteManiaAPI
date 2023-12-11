@@ -27,7 +27,7 @@ namespace EstanteMania.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> CreateUser([FromBody] User model)
         {
-            var user = new ApplicationUser { UserName =  model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password!);
 
             if (result.Succeeded)
@@ -61,6 +61,7 @@ namespace EstanteMania.API.Controllers
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email!),
+                new Claim(JwtRegisteredClaimNames.GivenName, userInfo.Email!),
                 //new Claim(JwtRegisteredClaimNames.Name, userInfo.UserName!),
                 new Claim(JwtRegisteredClaimNames.Aud, _config["Jwt:Audience"]!),
                 new Claim(JwtRegisteredClaimNames.Iss, _config["Jwt:Issuer"]!),

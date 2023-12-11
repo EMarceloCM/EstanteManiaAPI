@@ -86,11 +86,12 @@ namespace EstanteMania.API.DTO_s
         [Range(1, 9999)]
         public int Stock { get; set; } = 0;
 
-        [JsonIgnore]
-        public Author? Author { get; set; }
+        [Required(ErrorMessage = "The author id is required.")]
+        [Range(1, 9999)]
+        public int AuthorId { get; set; }
 
         [JsonIgnore]
-        public int AuthorId { get; set; }
+        public Author? Author { get; set; }
 
         [JsonIgnore]
         public ICollection<Category>? Categories { get; set; }

@@ -24,5 +24,6 @@
         public int AuthorId { get; set; }
         public ICollection<Category>? Categories { get; set; } = new List<Category>();
         public ICollection<CategoryBook>? CategorysBooks { get; set; } = new List<CategoryBook>();
+        public ICollection<CarrinhoItem> Itens { get; set; } = new List<CarrinhoItem>();
     }
 }

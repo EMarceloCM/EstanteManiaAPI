@@ -15,7 +15,7 @@ namespace EstanteMania.API.DTO_s
 
         [Required(ErrorMessage = "The author description is required.")]
         [MinLength(5)]
-        [MaxLength(250)]
+        [MaxLength(400)]
         public string? Description { get; set; }
 
         [JsonIgnore]

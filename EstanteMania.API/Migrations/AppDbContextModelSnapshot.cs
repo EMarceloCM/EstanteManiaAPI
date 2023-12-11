@@ -196,6 +196,49 @@ namespace EstanteMania.API.Migrations
                     b.ToTable("Book");
                 });
 
+            modelBuilder.Entity("EstanteMania.Models.Models.Carrinho", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carrinho");
+                });
+
+            modelBuilder.Entity("EstanteMania.Models.Models.CarrinhoItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarrinhoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("CarrinhoId");
+
+                    b.ToTable("CarrinhoItens");
+                });
+
             modelBuilder.Entity("EstanteMania.Models.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -383,6 +426,25 @@ namespace EstanteMania.API.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("EstanteMania.Models.Models.CarrinhoItem", b =>
+                {
+                    b.HasOne("EstanteMania.Models.Models.Book", "Book")
+                        .WithMany("Itens")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EstanteMania.Models.Models.Carrinho", "Carrinho")
+                        .WithMany("Itens")
+                        .HasForeignKey("CarrinhoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Carrinho");
+                });
+
             modelBuilder.Entity("EstanteMania.Models.Models.CategoryBook", b =>
                 {
                     b.HasOne("EstanteMania.Models.Models.Book", "Book")
@@ -461,6 +523,13 @@ namespace EstanteMania.API.Migrations
             modelBuilder.Entity("EstanteMania.Models.Models.Book", b =>
                 {
                     b.Navigation("CategorysBooks");
+
+                    b.Navigation("Itens");
+                });
+
+            modelBuilder.Entity("EstanteMania.Models.Models.Carrinho", b =>
+                {
+                    b.Navigation("Itens");
                 });
 
             modelBuilder.Entity("EstanteMania.Models.Models.Category", b =>

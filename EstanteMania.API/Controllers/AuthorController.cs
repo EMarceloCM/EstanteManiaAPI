@@ -63,6 +63,7 @@ namespace EstanteMania.API.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetAuthor")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AuthorDTO>> GetById(int id)
