@@ -1,0 +1,6 @@
+@EstanteMania.DiscountAPI_HostAddress = http://localhost:5117
+
+# GET {{EstanteMania.DiscountAPI_HostAddress}}/weatherforecast/
+# Accept: application/json
+
+# ###

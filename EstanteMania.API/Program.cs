@@ -1,6 +1,7 @@
 using EstanteMania.API.Context;
 using EstanteMania.API.Identity_Entities;
 using EstanteMania.API.Mappings;
+using EstanteMania.API.RabbitMQSender;
 using EstanteMania.API.UnitOfWork;
 using EstanteMania.API.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,7 +18,7 @@ builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.Re
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "apiEstanteMani", Version = "v1" });
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "apiEstanteMania", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
     {
         Name = "Authorization",
@@ -51,6 +52,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 ));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMqMessageSender>();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 {
     policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();

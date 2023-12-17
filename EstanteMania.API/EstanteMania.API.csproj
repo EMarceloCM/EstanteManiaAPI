@@ -10,6 +10,7 @@
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.7.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
@@ -20,6 +21,7 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EstanteMania.MessageBus\EstanteMania.MessageBus.csproj" />
     <ProjectReference Include="..\EstanteMania.Models\EstanteMania.Models.csproj" />
   </ItemGroup>
 </Project>

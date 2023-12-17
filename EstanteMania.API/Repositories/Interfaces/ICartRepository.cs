@@ -1,4 +1,5 @@
 ﻿using EstanteMania.API.DTO_s;
+using EstanteMania.API.Messages;
 using EstanteMania.Models.Models;
 
 namespace EstanteMania.API.Repositories.Interfaces
@@ -12,5 +13,9 @@ namespace EstanteMania.API.Repositories.Interfaces
         Task<IEnumerable<CarrinhoItem>> GetItems(string userId);
         Task<int> GetCartFromUser(string userId);
         Task<int> CreateCart(string userId);
+
+        Task<bool> ApplyCouponAsync(string userId, string couponCode);
+        Task<bool> DeleteCouponAsync(string userId);
+        Task<string?> GetCouponFromUserAsync(string userId);
     }
 }

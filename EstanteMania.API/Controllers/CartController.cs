@@ -1,6 +1,8 @@
 ﻿using EstanteMania.API.DTO_s;
 using EstanteMania.API.Identity_Entities;
 using EstanteMania.API.Mappings;
+using EstanteMania.API.Messages;
+using EstanteMania.API.RabbitMQSender;
 using EstanteMania.API.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,11 +13,12 @@ namespace EstanteMania.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public class CartController(IUnitOfWork uow, ILogger<CartController> logger, UserManager<ApplicationUser> userManager) : ControllerBase
+    public class CartController(IUnitOfWork uow, ILogger<CartController> logger, UserManager<ApplicationUser> userManager, IRabbitMQMessageSender rabbitMQSender) : ControllerBase
     {
         private readonly IUnitOfWork _uow = uow;
         private readonly ILogger<CartController> _logger = logger;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
+        private readonly IRabbitMQMessageSender _rabbitMQSender = rabbitMQSender;
 
         [HttpGet("{userId}/GetItens")]
         public async Task<ActionResult<IEnumerable<CarrinhoItemDTO>>> GetItems(string userId)
@@ -30,7 +33,7 @@ namespace EstanteMania.API.Controllers
                 var carrinhoItemDTO = cartItems.ConvertCarrinhoItemsToDTO(books);
                 return Ok(carrinhoItemDTO);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError("## Error while trying to get cart itens");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -69,8 +72,8 @@ namespace EstanteMania.API.Controllers
                 if (newCartItem == null) return NoContent();
 
                 var book = await _uow.BookRepository.GetByIdAsync(newCartItem.BookId);
-                if (book == null) throw new Exception($"Book not found (Id: {cartItemDTO.BookId })");
-                
+                if (book == null) throw new Exception($"Book not found (Id: {cartItemDTO.BookId})");
+
                 var newCartItemDTO = newCartItem.ConvertCarrinhoItemToDTO(book);
                 //return CreatedAtAction("GetItem", new { id = newCartItemDTO.Id, newCartItemDTO});
                 return Ok(newCartItemDTO);
@@ -133,7 +136,7 @@ namespace EstanteMania.API.Controllers
                 var cartId = await _uow.CartRepository.GetCartFromUser(userId);
                 if (cartId == 0) return NotFound();
 
-                return Ok(cartId);
+                return cartId;
             }
             catch (Exception ex)
             {
@@ -157,6 +160,49 @@ namespace EstanteMania.API.Controllers
                 logger.LogError("## Error while trying to get the cart");
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.StackTrace);
             }
+        }
+
+        [HttpPost("applycoupon")]
+        public async Task<ActionResult> ApplyCoupon(UserCoupon userCoupon)
+        {
+            var sucess = await _uow.CartRepository.ApplyCouponAsync(userCoupon.UserId, userCoupon.CouponCode);
+
+            if (!sucess) return NotFound($"Cart not found for user: {userCoupon.UserId}.");
+
+            return Ok(sucess);
+        }
+
+        [HttpDelete("deletecoupon/{userId}")]
+        public async Task<ActionResult> DeleteCoupon(string userId)
+        {
+            var sucess = await _uow.CartRepository.DeleteCouponAsync(userId);
+            if (!sucess) return NotFound("Discount coupon not found for this user");
+
+            return Ok(sucess);
+        }
+
+        [HttpGet("get-coupon-from-user/{userId}")]
+        public async Task<ActionResult<string>> GetCouponFromUser(string userId)
+        {
+            var couponCode = await _uow.CartRepository.GetCouponFromUserAsync(userId);
+            if (couponCode == null) return NotFound("No coupon for this user.");
+
+            return Ok(couponCode);
+        }
+
+        [HttpPost("checkout")]
+        public async Task<ActionResult<CartHeaderDTO>> Checkout(CartHeaderDTO cartHeaderDTO)
+        {
+            if (string.IsNullOrEmpty(cartHeaderDTO.UserId)) return BadRequest();
+            var cart = await _uow.CartRepository.GetCartFromUser(cartHeaderDTO.UserId);
+            if (cart == 0) return NotFound();
+            cartHeaderDTO.DateTime = DateTime.Now;
+
+            cartHeaderDTO.cartId = cart;
+
+            _rabbitMQSender.SendMessage(cartHeaderDTO, "checkoutqueue");
+
+            return Ok(cartHeaderDTO);
         }
     }
 }

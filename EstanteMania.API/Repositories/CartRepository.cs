@@ -1,5 +1,6 @@
 ﻿using EstanteMania.API.Context;
 using EstanteMania.API.DTO_s;
+using EstanteMania.API.Messages;
 using EstanteMania.API.Repositories.Interfaces;
 using EstanteMania.Models.Models;
 using Microsoft.EntityFrameworkCore;
@@ -117,6 +118,43 @@ namespace EstanteMania.API.Repositories
             await _context.SaveChangesAsync();
 
             return newCart.Entity.Id;
+        }
+
+        public async Task<bool> ApplyCouponAsync(string userId, string couponCode)
+        {
+            var cart = await _context.Carrinho.Where(x => x.UserId == userId).AsNoTracking().FirstOrDefaultAsync();
+            if (cart != null)
+            {
+                cart.CouponCode = couponCode;
+
+                _context.Carrinho.Update(cart);
+                _context.Entry(cart).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteCouponAsync(string userId)
+        {
+            var cart = await _context.Carrinho.Where(x => x.UserId == userId).AsNoTracking().FirstOrDefaultAsync();
+            if (cart != null)
+            {
+                cart.CouponCode = null;
+
+                _context.Carrinho.Update(cart);
+                _context.Entry(cart).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<string?> GetCouponFromUserAsync(string userId)
+        {
+            return await _context.Carrinho.Where(x => x.UserId == userId).Select(x => x.CouponCode).AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

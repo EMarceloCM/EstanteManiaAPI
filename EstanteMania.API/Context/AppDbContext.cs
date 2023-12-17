@@ -68,6 +68,7 @@ namespace EstanteMania.API.Context
 
             #region Cart
             mb.Entity<Carrinho>().HasKey(x => x.Id);
+            mb.Entity<Carrinho>().Property(x => x.CouponCode).HasMaxLength(80);
             #endregion
 
             #region Relacionamentos e CategoryBooksId
