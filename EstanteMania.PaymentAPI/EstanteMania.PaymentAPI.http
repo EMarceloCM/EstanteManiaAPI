@@ -1,0 +1,6 @@
+@EstanteMania.PaymentAPI_HostAddress = http://localhost:5103
+
+GET {{EstanteMania.PaymentAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -19,5 +19,6 @@ namespace EstanteMania.API.Messages
         public int CartTotalItens { get; set; }
         public IEnumerable<CarrinhoItemDTO> CartDetails { get; set; }
         public int cartId { get; set; }
+        public int Payment_Status { get; set; }
     }
 }

@@ -201,6 +201,7 @@ namespace EstanteMania.API.Controllers
             cartHeaderDTO.cartId = cart;
 
             _rabbitMQSender.SendMessage(cartHeaderDTO, "checkoutqueue");
+            _ = await _uow.CartRepository.DeleteCartAsync(cartHeaderDTO.UserId);
 
             return Ok(cartHeaderDTO);
         }

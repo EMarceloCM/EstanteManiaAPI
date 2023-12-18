@@ -12,6 +12,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstanteMania.MessageBus", "..\EstanteMania.MessageBus\EstanteMania.MessageBus.csproj", "{24FAAF58-42AA-4811-8641-8F6F20F67E15}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{CEC9D13D-1592-4E13-86AD-09C37805A864}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstanteMania.PaymentProcessor", "..\EstanteMania.PaymentProcessor\EstanteMania.PaymentProcessor.csproj", "{464FC683-BDE6-4B2A-A511-3BDD74691746}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstanteMania.PaymentAPI", "..\EstanteMania.PaymentAPI\EstanteMania.PaymentAPI.csproj", "{AD93F061-0566-4B4C-B7B6-EA05D2BD9236}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D644C668-6B8E-4335-AFEA-ACD729C7B465} = {D644C668-6B8E-4335-AFEA-ACD729C7B465}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstanteMania.Email", "..\EstanteMania.Email\EstanteMania.Email.csproj", "{FFAF97EA-C741-4AFE-8BD9-C95759695A77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{13DBD057-5514-4496-81C5-E7A6DD5E9E21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstanteMania.APIGateway", "..\EstanteMania.APIGateway\EstanteMania.APIGateway.csproj", "{D574534C-5A66-44A5-AB4D-E5F880209308}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,12 +49,30 @@ Global
 		{24FAAF58-42AA-4811-8641-8F6F20F67E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24FAAF58-42AA-4811-8641-8F6F20F67E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24FAAF58-42AA-4811-8641-8F6F20F67E15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464FC683-BDE6-4B2A-A511-3BDD74691746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464FC683-BDE6-4B2A-A511-3BDD74691746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464FC683-BDE6-4B2A-A511-3BDD74691746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464FC683-BDE6-4B2A-A511-3BDD74691746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD93F061-0566-4B4C-B7B6-EA05D2BD9236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD93F061-0566-4B4C-B7B6-EA05D2BD9236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD93F061-0566-4B4C-B7B6-EA05D2BD9236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD93F061-0566-4B4C-B7B6-EA05D2BD9236}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFAF97EA-C741-4AFE-8BD9-C95759695A77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFAF97EA-C741-4AFE-8BD9-C95759695A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFAF97EA-C741-4AFE-8BD9-C95759695A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFAF97EA-C741-4AFE-8BD9-C95759695A77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D574534C-5A66-44A5-AB4D-E5F880209308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D574534C-5A66-44A5-AB4D-E5F880209308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D574534C-5A66-44A5-AB4D-E5F880209308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D574534C-5A66-44A5-AB4D-E5F880209308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{24FAAF58-42AA-4811-8641-8F6F20F67E15} = {F87F63F1-C88D-406D-A801-5FCB8378882D}
+		{464FC683-BDE6-4B2A-A511-3BDD74691746} = {CEC9D13D-1592-4E13-86AD-09C37805A864}
+		{D574534C-5A66-44A5-AB4D-E5F880209308} = {13DBD057-5514-4496-81C5-E7A6DD5E9E21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1F927FE-48D3-4E0B-9383-DD483B918E63}

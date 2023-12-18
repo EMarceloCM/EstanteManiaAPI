@@ -4,6 +4,8 @@ using EstanteMania.API.Mappings;
 using EstanteMania.API.RabbitMQSender;
 using EstanteMania.API.UnitOfWork;
 using EstanteMania.API.UnitOfWork.Interface;
+using GeekShopping.API.MessageConsumer;
+using GeekShopping.OrderAPI.MessageConsumer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +55,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMqMessageSender>();
+builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+builder.Services.AddHostedService<RabbitMQPaymentConsumer>(serviceProvider =>
+{
+    var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
+    return new RabbitMQPaymentConsumer(scopeFactory);
+});
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 {
     policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();

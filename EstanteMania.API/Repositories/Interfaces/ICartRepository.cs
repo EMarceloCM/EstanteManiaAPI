@@ -17,5 +17,7 @@ namespace EstanteMania.API.Repositories.Interfaces
         Task<bool> ApplyCouponAsync(string userId, string couponCode);
         Task<bool> DeleteCouponAsync(string userId);
         Task<string?> GetCouponFromUserAsync(string userId);
+        Task UpdatePayment(int cartId, int status);
+        Task<bool> DeleteCartAsync(string userId);
     }
 }

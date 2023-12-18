@@ -109,6 +109,12 @@ namespace EstanteMania.API.Repositories
         public async Task<int> GetCartFromUser(string userId)
         {
             var carrinho = await _context.Carrinho.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (carrinho == null)
+            {
+                var id = CreateCart(userId);
+                return id.Result;
+            }
+
             return carrinho.Id;
         }
 
@@ -155,6 +161,26 @@ namespace EstanteMania.API.Repositories
         public async Task<string?> GetCouponFromUserAsync(string userId)
         {
             return await _context.Carrinho.Where(x => x.UserId == userId).Select(x => x.CouponCode).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public async Task UpdatePayment(int cartId, int status)
+        {
+            var cart = await _context.Carrinho.FindAsync(cartId);
+            cart.Payment_Status = status;
+            _context.Entry(cart).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteCartAsync(string userId)
+        {
+            var cart = await _context.Carrinho.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (cart != null)
+            {
+                _context.Carrinho.Remove(cart);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

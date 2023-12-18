@@ -1,0 +1,6 @@
+@EstanteMania.APIGateway_HostAddress = http://localhost:5167
+
+GET {{EstanteMania.APIGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

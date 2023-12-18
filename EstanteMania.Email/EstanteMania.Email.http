@@ -1,0 +1,6 @@
+@EstanteMania.Email_HostAddress = http://localhost:5188
+
+GET {{EstanteMania.Email_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
