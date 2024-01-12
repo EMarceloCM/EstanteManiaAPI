@@ -1,2 +1,2 @@
 ## Admin Panel: https://github.com/EMarceloCM/EstanteManiaAdminPanel
-## Bookstore: 
+## Bookstore: https://github.com/EMarceloCM/Estante-Mania
